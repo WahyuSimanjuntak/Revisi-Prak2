@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ENHYPEN Universe</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        body {
+            background-color: #1a202b;
+            overflow-x: hidden;
+        }
+        /* LOGIN PAGE STYLES */
+        .login-container {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            background: linear-gradient(135deg, #1d1d1d 0%, #000000 50%, #FF5C00 100%);
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .login-container:before {
+            content: '';
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(255, 92, 0, 0.1) 0%, rgba(255,255,255,0) 70%);
+            top: -250px;
+            left: -250px;
+            animation: moveGlow 15s infinite alternate;
+        }
+        @keyframes moveGlow {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(100vw, 100vh); }
+        }
+        .login-box {
+            background-color: rgba(255, 255, 255, 0.9);
+            width: 360px;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.4);
+            position: relative;
+            z-index: 10;
+            transform: translateY(0);
+            animation: floatBox 6s ease-in-out infinite;
+        }
+        @keyframes floatBox {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .login-header h2 {
+            color: #000000;
+            font-size: 28px;
+            margin-bottom: 10px;
+            animation: colorShift 5s infinite alternate;
+        }
+        @keyframes colorShift {
+            0% { color: #000000; }
+            50% { color: #FF5C00; }
+            100% { color: #000000; }
+        }
+        .login-header p {
+            color: #333333;
+            font-size: 14px;
+        }
+        .input-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #000000;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ccd0d5;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        .input-group input:focus {
+            border-color: #FF5C00;
+            box-shadow: 0 0 10px rgba(255, 92, 0, 0.3);
+            outline: none;
+        }
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #000000 0%, #FF5C00 100%);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        .login-btn:after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.1);
+            transform: rotate(30deg);
+            transition: all 0.8s;
+            opacity: 0;
+        }
+        .login-btn:hover {
+            background: linear-gradient(135deg, #FF5C00 0%, #000000 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 7px 14px rgba(255, 92, 0, 0.3);
+        }
+        .login-btn:hover:after {
+            opacity: 1;
+            transform: rotate(30deg) translate(50%, -50%);
+        }
+        .login-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 3px 8px rgba(255, 92, 0, 0.3);
+        }
+        /* DASHBOARD STYLES */
+        .dashboard-container {
+            display: none;
+            width: 100%;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f7f7f7 0%, #eaeaea 100%);
+        }
+        /* Top Navigation */
+        .top-nav {
+            background: linear-gradient(90deg, #000000 0%, #FF5C00 100%);
+            color: white;
+            padding: 15px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+        .brand h2 {
+            font-size: 22px;
+            color: #ffffff;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        .nav-menu {
+            display: flex;
+        }
+        .nav-item {
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-radius: 5px;
+            margin: 0 5px;
+            position: relative;
+            overflow: hidden;
+        }
+        .nav-item:before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: #ffffff;
+            transform: scaleX(0);
+            transition: transform 0.3s;
+        }
+        .nav-item:hover:before {
+            transform: scaleX(1);
+        }
+        .nav-item.active {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        .nav-item.active:before {
+            transform: scaleX(1);
+        }
+        .user-section {
+            display: flex;
+            align-items: center;
+        }
+        .user-section img {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            margin-right: 10px;
+            border: 2px solid white;
+        }
+        .user-section h4 {
+            color: white;
+            font-size: 15px;
+            margin-right: 15px;
+        }
+        .logout-btn {
+            background: rgba(225, 76, 60, 0.8);
+            color: white;
+            border: none;
+            padding: 7px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .logout-btn:hover {
+            background: rgba(225, 76, 60, 1);
+            transform: translateY(-2px);
+        }
+        /* Main Content */
+        .main-content {
+            padding: 100px 20px 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .content-section {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            display: none;
+            animation: fadeInUp 0.5s;
+        }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        .section-header {
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #ecf0f1;
+            position: relative;
+        }
+
+        .section-header:after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, #000000 0%, #FF5C00 100%);
+            animation: widthGrow 1s ease-out;
+        }
+        @keyframes widthGrow {
+            from { width: 0; }
+            to { width: 100px; }
+        }
+        .section-header h3 {
+            color: #000000;
+            font-size: 22px;
+        }
+        /* Gallery grid */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+        }
+        .gallery-item {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.4s;
+            position: relative;
+            top: 0;
+            opacity: 0;
+            animation: fadeIn 0.5s forwards;
+            animation-delay: calc(var(--i) * 0.1s);
+        }
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                top: 0;
+            }
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s;
+        }
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .gallery-item .caption {
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.833);
+            position: relative;
+        }
+        .gallery-item .caption:before {
+            content: '';
+            position: absolute;
+            width: 50px;
+            height: 2px;
+            background: linear-gradient(90deg, #000000 0%, #FF5C00 100%);
+            top: 0;
+            left: 20px;
+            transform: translateY(-50%);
+        }
+        .gallery-item h4 {
+            margin-bottom: 8px;
+            color: #000000;
+            transition: color 0.3s;
+        }
+        .gallery-item:hover h4 {
+            color: #FF5C00;
+        }
+        .gallery-item p {
+            color: #333333;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        /* Icons */
+        .icon {
+            font-style: normal;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Page with Orange & Black Theme and Animation -->
+    <div class="login-container" id="loginPage">
+        <div class="login-box">
+            <div class="login-header">
+                <h2>ENHYPEN Universe</h2>
+                <p>Masuk untuk menjelajahi dunia ENGENE</p>
+            </div>
+            <form id="loginForm">
+                <div class="input-group">
+                    <label for="username">Nama Pengguna</label>
+                    <input type="text" id="username" placeholder="Masukkan nama pengguna">
+                </div>
+                <div class="input-group">
+                    <label for="password">Kata Sandi</label>
+                    <input type="password" id="password" placeholder="Masukkan kata sandi">
+                </div>
+                <button type="button" class="login-btn" id="loginBtn">Masuk</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Dashboard with Top Navigation -->
+    <div class="dashboard-container" id="dashboardPage">
+        <!-- Top Navigation -->
+        <div class="top-nav">
+            <div class="nav-container">
+                <div class="brand">
+                    <h2>ENHYPEN Universe</h2>
+                </div>
+                <div class="nav-menu">
+                    <div class="nav-item active" data-section="albums">
+                        <span class="icon">💿</span> ALBUMS
+                    </div>
+                    <div class="nav-item" data-section="performances">
+                        <span class="icon">🧑🏻‍🎤</span> PERFORMANCES
+                    </div>
+                    <div class="nav-item" data-section="members">
+                        <span class="icon">👥</span> MEMBERS
+                    </div>
+                </div>
+                <div class="user-section">
+                    <img src="wahyu.jpg" alt="User">
+                    <h4 id="userDisplayName">ENGENE</h4>
+                    <button class="logout-btn" id="logoutBtn">Keluar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Albums Section -->
+            <div class="content-section active" id="albums-section">
+                <div class="section-header">
+                    <h3>Album ENHYPEN</h3>
+                </div>
+                <div class="gallery-grid">
+                    <!-- BORDER: DAY ONE -->
+                    <div class="gallery-item" style="--i: 1">
+                        <img src="DAY ONE.jpeg" alt="BORDER: DAY ONE">
+                        <div class="caption">
+                            <h4>BORDER: DAY ONE</h4>
+                            <p>EP debut ENHYPEN yang dirilis pada 30 November 2020, menampilkan lagu hit "Given-Taken".</p>
+                        </div>
+                    </div>
+                 
+                    <!-- BORDER: CARNIVAL -->
+                    <div class="gallery-item" style="--i: 2">
+                        <img src="CARNIVAL.jpeg" alt="BORDER: CARNIVAL">
+                        <div class="caption">
+                            <h4>BORDER: CARNIVAL</h4>
+                            <p>EP kedua mereka yang dirilis pada 26 April 2021, menampilkan lagu energik "Drunk-Dazed".</p>
+                        </div>
+                    </div>               
+                    <!-- DIMENSION: DILEMMA -->
+                    <div class="gallery-item" style="--i: 3">
+                        <img src="DILEMA.jpeg" alt="DIMENSION: DILEMMA">
+                        <div class="caption">
+                            <h4>DIMENSION: DILEMMA</h4>
+                            <p>Album studio pertama mereka yang dirilis pada 12 Oktober 2021, dengan lagu utama "Tamed-Dashed".</p>
+                        </div>
+                    </div>
+                    <!-- MANIFESTO: DAY 1 -->
+                    <div class="gallery-item" style="--i: 4">
+                        <img src="DAY 1 MANIFESTO.jpeg" alt="MANIFESTO: DAY 1">
+                        <div class="caption">
+                            <h4>MANIFESTO: DAY 1</h4>
+                            <p>EP ketiga mereka yang dirilis pada 4 Juli 2022, menampilkan lagu penuh kekuatan "Future Perfect (Pass the MIC)".</p>
+                        </div>
+                    </div>
+                    <!-- DARK BLOOD -->
+                    <div class="gallery-item" style="--i: 5">
+                        <img src="DARK BLOOD.jpeg" alt="DARK BLOOD">
+                        <div class="caption">
+                            <h4>DARK BLOOD</h4>
+                            <p>EP keempat mereka yang dirilis pada 22 Mei 2023, dengan lagu intens "Bite Me".</p>
+                        </div>
+                    </div>
+                    <!-- ORANGE BLOOD -->
+                    <div class="gallery-item" style="--i: 6">
+                        <img src="ORANGE BLOOD.jpeg" alt="ORANGE BLOOD">
+                        <div class="caption">
+                            <h4>ORANGE BLOOD</h4>
+                            <p>EP kelima mereka yang dirilis pada 17 November 2023, menampilkan lagu penuh warna "Sweet Venom".</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Performances Section -->
+            <div class="content-section" id="performances-section">
+                <div class="section-header">
+                    <h3>Penampilan Berkesan</h3>
+                </div>
+                <div class="gallery-grid">
+                    <!-- MAMA 2021 -->
+                    <div class="gallery-item" style="--i: 1">
+                        <img src="MAMA 2021.jpeg" alt="MAMA 2021">
+                        <div class="caption">
+                            <h4>MAMA 2021</h4>
+                            <p>Penampilan memukau mereka di Mnet Asian Music Awards dimana mereka memenangkan Rookie of the Year.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- The FIRST FAN MEETING -->
+                    <div class="gallery-item" style="--i: 2">
+                        <img src="EN-CONNECT.jpeg" alt="EN-CONNECT">
+                        <div class="caption">
+                            <h4>EN-CONNECT</h4>
+                            <p>Fan meeting resmi pertama mereka dimana mereka terhubung dengan ENGENE dari seluruh dunia.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- KCON 2022 -->
+                    <div class="gallery-item" style="--i: 3">
+                        <img src="KCON 2022.jpeg" alt="KCON 2022">
+                        <div class="caption">
+                            <h4>KCON 2022</h4>
+                            <p>Penampilan berenergi tinggi mereka di KCON 2022 yang menampilkan kemampuan tari mereka yang luar biasa.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- I-LAND -->
+                    <div class="gallery-item" style="--i: 4">
+                        <img src="Final I-LAND.jpeg" alt="I-LAND">
+                        <div class="caption">
+                            <h4>Final I-LAND</h4>
+                            <p>Penampilan legendaris yang menyatukan tujuh anggota bersama untuk pertama kalinya.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- ENHYPEN WORLD TOUR -->
+                    <div class="gallery-item" style="--i: 5">
+                        <img src="MANIFESTO World Tour.jpeg" alt="MANIFESTO World Tour">
+                        <div class="caption">
+                            <h4>MANIFESTO World Tour</h4>
+                            <p>Tur dunia pertama mereka yang mencakup berbagai benua dan menunjukkan popularitas global mereka.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Music Bank -->
+                    <div class="gallery-item" style="--i: 6">
+                        <img src="Music Bank.jpeg" alt="Music Bank Win">
+                        <div class="caption">
+                            <h4>Kemenangan Pertama di Acara Musik</h4>
+                            <p>Kemenangan emosional pertama mereka di acara musik Korea dengan lagu "Drunk-Dazed".</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Members Section -->
+            <div class="content-section" id="members-section">
+                <div class="section-header">
+                    <h3>Members ENHYPEN</h3>
+                </div>
+                <div class="gallery-grid">
+                    <!-- Jungwon -->
+                    <div class="gallery-item" style="--i: 1">
+                        <img src="Jungwon.jpeg" alt="Jungwon">
+                        <div class="caption">
+                            <h4>Jungwon</h4>
+                            <p>Leader dan vokalis. Lahir pada 9 Februari 2004. Dikenal dengan kemampuan kepemimpinannya dan warna vokal yang unik.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Heeseung -->
+                    <div class="gallery-item" style="--i: 2">
+                        <img src="Heeseung.jpeg" alt="Heeseung">
+                        <div class="caption">
+                            <h4>Heeseung</h4>
+                            <p>Main vokalis dan penari. Lahir pada 15 Oktober 2001. Dikenal sebagai ace group karena kemampuannya yang serba bisa.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Jay -->
+                    <div class="gallery-item" style="--i: 3">
+                        <img src="Jay.jpeg" alt="Jay">
+                        <div class="caption">
+                            <h4>Jay</h4>
+                            <p>Vokalis dan rapper. Lahir pada 20 April 2002. Dikenal dengan selera fashion dan kepribadiannya yang blak-blakan.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Jake -->
+                    <div class="gallery-item" style="--i: 4">
+                        <img src="Jake.jpeg" alt="Jake">
+                        <div class="caption">
+                            <h4>Jake</h4>
+                            <p>Vokalis. Lahir pada 15 November 2002. Anggota dari Australia yang dikenal dengan senyuman menawan dan kepribadian hangatnya.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Sunghoon -->
+                    <div class="gallery-item" style="--i: 5">
+                        <img src="Sunghoon.jpeg" alt="Sunghoon">
+                        <div class="caption">
+                            <h4>Sunghoon</h4>
+                            <p>Vokalis dan penari. Lahir pada 8 Desember 2002. Mantan atlet figure skating profesional dengan gerakan yang elegan.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Sunoo -->
+                    <div class="gallery-item" style="--i: 6">
+                        <img src="Sunoo.jpeg" alt="Sunoo">
+                        <div class="caption">
+                            <h4>Sunoo</h4>
+                            <p>Vokalis. Lahir pada 24 Juni 2003. Dikenal dengan energi cerianya dan ekspresi wajah yang ekspresif.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Ni-ki -->
+                    <div class="gallery-item" style="--i: 7">
+                        <img src="Ni-ki.jpeg" alt="Ni-ki">
+                        <div class="caption">
+                            <h4>Ni-ki</h4>
+                            <p>Main dancer dan vokalis. Lahir pada 9 Desember 2005. Anggota dari Jepang yang dikenal sebagai jenius tari.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Login functionality
+        document.getElementById('loginBtn').addEventListener('click', function() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            // Simple validation
+            if (username.trim() !== "" && password.trim() !== "") {
+                // Hide login page
+                document.getElementById('loginPage').style.display = 'none';
+                // Show dashboard
+                document.getElementById('dashboardPage').style.display = 'block';
+                // Update user display name
+                document.getElementById('userDisplayName').textContent = username;
+            } else {
+                alert("Nama pengguna dan kata sandi tidak boleh kosong!");
+            }
+        });
+        // Logout functionality
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            // Hide dashboard
+            document.getElementById('dashboardPage').style.display = 'none';
+            // Show login page
+            document.getElementById('loginPage').style.display = 'flex';
+            // Clear form
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+        });
+        // Menu navigation
+        const navItems = document.querySelectorAll('.nav-item');
+        const contentSections = document.querySelectorAll('.content-section');
+        navItems.forEach(item => {
+            item.addEventListener('click', function() {
+                // Remove active class from all menu items
+                navItems.forEach(i => i.classList.remove('active'));
+                
+                // Add active class to clicked item
+                this.classList.add('active');
+                // Hide all content sections
+                contentSections.forEach(section => {
+                    section.classList.remove('active');
+                });
+                // Show corresponding content section
+                const sectionId = this.getAttribute('data-section') + '-section';
+                document.getElementById(sectionId).classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
